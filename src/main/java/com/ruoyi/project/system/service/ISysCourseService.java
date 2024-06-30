@@ -2,15 +2,11 @@ package com.ruoyi.project.system.service;
 
 import java.util.List;
 import com.ruoyi.project.system.domain.SysCourse;
-import com.ruoyi.project.system.domain.SysPost;
 
 /**
  * 课程信息 服务层
- *
- * @author ruoyi
  */
-public interface ISysCourseService
-{
+public interface ISysCourseService {
     /**
      * 查询课程信息集合
      *
@@ -35,7 +31,7 @@ public interface ISysCourseService
     public SysCourse selectCourseById(Long courseId);
 
     /**
-     * 校验课程名称
+     * 校验课程名称是否唯一
      *
      * @param course 课程信息
      * @return 结果
@@ -48,7 +44,6 @@ public interface ISysCourseService
      * @param courseId 课程ID
      * @return 结果
      */
-
     public int deleteCourseById(Long courseId);
 
     /**

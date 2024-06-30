@@ -45,6 +45,10 @@ public class SysCourse extends BaseEntity {
     @Excel(name = "课程排序", cellType = ColumnType.NUMERIC)
     private Integer courseSort;
 
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+
     public Long getCourseId() {
         return courseId;
     }
@@ -63,7 +67,6 @@ public class SysCourse extends BaseEntity {
         this.courseName = courseName;
     }
 
-    @NotBlank(message = "课程简介不能为空")
     @Size(min = 0, max = 500, message = "课程简介长度不能超过500个字符")
     public String getCourseDescription() {
         return courseDescription;
@@ -73,7 +76,6 @@ public class SysCourse extends BaseEntity {
         this.courseDescription = courseDescription;
     }
 
-    @NotBlank(message = "课程封面不能为空")
     @Size(min = 0, max = 255, message = "课程封面长度不能超过255个字符")
     public String getCourseCover() {
         return courseCover;
@@ -83,7 +85,6 @@ public class SysCourse extends BaseEntity {
         this.courseCover = courseCover;
     }
 
-    @NotBlank(message = "课程视频不能为空")
     @Size(min = 0, max = 255, message = "课程视频长度不能超过255个字符")
     public String getCourseVideo() {
         return courseVideo;
@@ -112,6 +113,15 @@ public class SysCourse extends BaseEntity {
         this.courseSort = courseSort;
     }
 
+    @Size(min = 0, max = 1000, message = "备注长度不能超过1000个字符")
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
@@ -122,6 +132,7 @@ public class SysCourse extends BaseEntity {
                 .append("courseVideo", getCourseVideo())
                 .append("courseAuthor", getCourseAuthor())
                 .append("courseSort", getCourseSort())
+                .append("remark", getRemark())
                 .append("createBy", getCreateBy())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
