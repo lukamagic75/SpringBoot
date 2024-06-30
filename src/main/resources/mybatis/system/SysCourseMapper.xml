@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysCourseMapper">
+
+    <resultMap type="SysCourse" id="SysCourseResult">
+        <id     property="courseId"        column="course_id"       />
+        <result property="courseName"      column="course_name"     />
+        <result property="courseDescription" column="course_description" />
+        <result property="courseCover"     column="course_cover"    />
+        <result property="courseVideo"     column="course_video"    />
+        <result property="courseAuthor"    column="course_author"   />
+        <result property="courseSort"      column="course_sort"     />
+        <result property="createBy"        column="create_by"       />
+        <result property="createTime"      column="create_time"     />
+        <result property="updateBy"        column="update_by"       />
+        <result property="updateTime"      column="update_time"     />
+        <result property="remark"          column="remark"          />
+    </resultMap>
+
+    <sql id="selectCourseVo">
+        select course_id, course_name, course_description, course_cover, course_video, course_author, course_sort, create_by, create_time, update_by, update_time, remark
+        from sys_course
+    </sql>
+
+    <select id="selectCourseList" parameterType="SysCourse" resultMap="SysCourseResult">
+        <include refid="selectCourseVo"/>
+        <where>
+            <if test="courseName != null and courseName != ''">
+                AND course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="courseAuthor != null and courseAuthor != ''">
+                AND course_author like concat('%', #{courseAuthor}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCourseAll" resultMap="SysCourseResult">
+        <include refid="selectCourseVo"/>
+    </select>
+
+    <select id="selectCourseById" parameterType="Long" resultMap="SysCourseResult">
+        <include refid="selectCourseVo"/>
+        where course_id = #{courseId}
+    </select>
+
+    <select id="checkCourseNameUnique" parameterType="String" resultType="SysCourse">
+        select course_id, course_name, course_description, course_cover, course_video, course_author, course_sort, create_by, create_time, update_by, update_time, remark
+        from sys_course
+        where course_name = #{courseName}
+            limit 1
+    </select>
+
+    <update id="updateCourse" parameterType="SysCourse">
+        update sys_course
+        <set>
+            <if test="courseName != null and courseName != ''">course_name = #{courseName},</if>
+            <if test="courseDescription != null and courseDescription != ''">course_description = #{courseDescription},</if>
+            <if test="courseCover != null and courseCover != ''">course_cover = #{courseCover},</if>
+            <if test="courseVideo != null and courseVideo != ''">course_video = #{courseVideo},</if>
+            <if test="courseAuthor != null and courseAuthor != ''">course_author = #{courseAuthor},</if>
+            <if test="courseSort != null">course_sort = #{courseSort},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where course_id = #{courseId}
+    </update>
+
+    <insert id="insertCourse" parameterType="SysCourse" useGeneratedKeys="true" keyProperty="courseId">
+        insert into sys_course(
+        <if test="courseName != null and courseName != ''">course_name,</if>
+        <if test="courseDescription != null and courseDescription != ''">course_description,</if>
+        <if test="courseCover != null and courseCover != ''">course_cover,</if>
+        <if test="courseVideo != null and courseVideo != ''">course_video,</if>
+        <if test="courseAuthor != null and courseAuthor != ''">course_author,</if>
+        <if test="courseSort != null">course_sort,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        create_time
+        ) values (
+        <if test="courseName != null and courseName != ''">#{courseName},</if>
+        <if test="courseDescription != null and courseDescription != ''">#{courseDescription},</if>
+        <if test="courseCover != null and courseCover != ''">#{courseCover},</if>
+        <if test="courseVideo != null and courseVideo != ''">#{courseVideo},</if>
+        <if test="courseAuthor != null and courseAuthor != ''">#{courseAuthor},</if>
+        <if test="courseSort != null">#{courseSort},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        sysdate()
+        )
+    </insert>
+
+    <delete id="deleteCourseById" parameterType="Long">
+        delete from sys_course where course_id = #{courseId}
+    </delete>
+
+    <delete id="deleteCourseByIds" parameterType="Long">
+        delete from sys_course where course_id in
+        <foreach collection="array" item="courseId" open="(" separator="," close=")">
+            #{courseId}
+        </foreach>
+    </delete>
+
+</mapper>
